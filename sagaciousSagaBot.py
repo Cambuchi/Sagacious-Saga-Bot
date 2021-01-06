@@ -33,7 +33,7 @@ def getGameRegion():
 
     # identify the top left-corner
     logging.debug('Finding game region...')
-    region = pyautogui.locateOnScreen('UpLeftCorner.png')
+    region = pyautogui.locateOnScreen(r'\images\UpLeftCorner.png')
     if region is None:
         raise Exception('Could not find game on screen. Is the game visible?')
 
@@ -49,7 +49,7 @@ def getPastGameMenu():
     # click on How To Play
     logging.debug('Looking for How To Play button...')
     while True:
-        pos = pyautogui.locateCenterOnScreen(('HowToPlay.png'), region=GAME_REGION)
+        pos = pyautogui.locateCenterOnScreen((r'\images\HowToPlay.png'), region=GAME_REGION)
         if pos is not None:
             break
     pyautogui.click(pos, duration=0.25)
@@ -61,7 +61,7 @@ def getPastGameMenu():
     # click on Play!
     logging.debug('Looking for Play button...')
     while True:
-        pos2 = pyautogui.locateCenterOnScreen(('Play.png'), region=GAME_REGION)
+        pos2 = pyautogui.locateCenterOnScreen((r'\images\Play.png'), region=GAME_REGION)
         if pos2 is not None:
             break
     pyautogui.click(pos2, duration=0.25)
@@ -129,10 +129,10 @@ def checkGameOver():
     global GAME_REGION
     global gameOver
     logging.debug('Black detected, checking for Game Over screen...')
-    gameOver = pyautogui.locateCenterOnScreen(('GameOver.png'), region=GAME_REGION)
+    gameOver = pyautogui.locateCenterOnScreen((r'\images\GameOver.png'), region=GAME_REGION)
     if gameOver is not None:
         logging.debug('Game Over screen found')
-        tryAgain = pyautogui.locateCenterOnScreen(('TryAgain.png'), region=GAME_REGION)
+        tryAgain = pyautogui.locateCenterOnScreen((r'\images\TryAgain.png'), region=GAME_REGION)
         print('Game Over! Press Enter to try again. Or press CTRL-C to quit.')
         input()
         pyautogui.click(tryAgain, duration=0.25)
