@@ -152,8 +152,52 @@ def confirmShortcut():
     else:
         return False
 
+def colorConfirmer(r, c):
+    # optional color gathering loop, faster than going through whole
+    # entire grid loop for just a single coordinate
+    global sagaGrid
+    x = pyautogui.pixel(CLICK_COORDS[r, c][0],
+                        CLICK_COORDS[r, c][1])
+    logging.debug('Color found is' + str(x))
+    if x in blue:
+        logging.debug('Blue found')
+        sagaGrid[r][c] = 'b'
+        return
+    if x in red:
+        logging.debug('Red found')
+        sagaGrid[r][c] = 'r'
+        return
+    if x in green:
+        logging.debug('Green found')
+        sagaGrid[r][c] = 'g'
+        return
+    if x in purple:
+        logging.debug('Purple found')
+        sagaGrid[r][c] = 'p'
+        return
+    if x in yellow:
+        logging.debug('Yellow found')
+        sagaGrid[r][c] = 'y'
+        return
+    if x in white:
+        logging.debug('White found')
+        sagaGrid[r][c] = 'w'
+        return
+    if x == (0, 0, 0):
+        logging.debug('Black found')
+        sagaGrid[r][c] = 'k'
+        return
+    if x == (255, 255, 255):
+        checkGameOver()
+    if x == (164, 164, 164):
+        checkGameOver()
+    else:
+        logging.debug('Final color check not in list found...')
+        checkGameOver()
+
 
 def getColor():
+    # loops through grid and grabs colors with pyautogui
     logging.debug('Putting colors from screen coordinates into game grid...')
     global sagaGrid
     for r in range(len(sagaGrid)):
@@ -177,6 +221,10 @@ def getColor():
                 logging.debug('Purple found')
                 sagaGrid[r][c] = 'p'
                 continue
+            if x in yellow:
+                logging.debug('Yellow found')
+                sagaGrid[r][c] = 'y'
+                continue
             if x in white:
                 logging.debug('White found')
                 sagaGrid[r][c] = 'w'
@@ -188,15 +236,14 @@ def getColor():
             else:
                 logging.debug('Color not in list found...')
                 time.sleep(0.5)
-                sagaGrid[r][c] = pyautogui.pixel(CLICK_COORDS[r, c][0],
-                                                 CLICK_COORDS[r, c][1])
+                colorConfirmer(r, c)
     logging.debug('Colors have been collected and placed in sagaGrid')
     logging.debug('\n' + (pformat(sagaGrid)))
     checkColor()
     return sagaGrid
 
 def checkColor():
-    # checks the colors from the grid to determine what to do
+    # checks the colors from the grid to determine if game over or continue
     global sagaGrid
     # if grid has no black, return game grid
     if not any('k' in s1 for s1 in sagaGrid):
@@ -238,7 +285,6 @@ def matchGrid(sagaGrid, x, y, oldChar, newChar):
     global connections
     gridWidth = len(sagaGrid[0])
     gridHeight = len(sagaGrid)
-
     if oldChar == None:
         oldChar = sagaGrid[x][y]
     # base cases, if color at x,y coordinate is different then color that called
@@ -247,11 +293,9 @@ def matchGrid(sagaGrid, x, y, oldChar, newChar):
         return
     if sagaGrid[x][y] != oldChar:
         return
-
     # sets current x,y coordinate to newChar ('', in this case).
     sagaGrid[x][y] = newChar
     connections += 1
-
     # LEFT
     if x > 0: # left
         matchGrid(sagaGrid, x-1, y, oldChar, newChar)
@@ -282,13 +326,10 @@ def matchGrid(sagaGrid, x, y, oldChar, newChar):
 
 def gameLoop():
     # main game loop.
-    global connections
     while True:
         getColor()
-        #checkColor()
         maxCoordinate = {'CLICK_HERE': 0,
                          'MAX_CONNECTIONS': 0}
-
         for x in range(len(sagaGrid)):
             for y in range(len(sagaGrid[0])):
                 connections = 0
