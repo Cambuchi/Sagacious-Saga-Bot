@@ -5,4 +5,4 @@ Make sure you have the game open and visible in a browser at 100% zoom.
 
 Here is the script in action. Note that pyautogui is slow at retrieving all of the colors. So improvement in speed can be achieved with buffering.
 
-[](Example.gif)
+![](Example.gif)
