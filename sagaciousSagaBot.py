@@ -21,14 +21,16 @@ green = [(160, 206, 45), (146, 194, 41),
          (151, 192, 41), (135, 171, 39),
          (131, 174, 40), (161, 208, 57),
          (179, 214, 83), (172, 214, 82),
-         (171, 212, 72), (180, 217, 93)]
+         (171, 212, 72), (180, 217, 93),
+         (140, 174, 58)]
 red = [(242, 55, 53), (243, 58, 60),
        (245, 87, 87), (247, 82, 86),
        (244, 78, 77), (242, 67, 68),
        (242, 116, 115), (248, 120, 119),
        (246, 113, 115), (248, 91, 96),
        (245, 104, 105), (203, 16, 13),
-       (210, 5, 17), (182, 17, 16)]
+       (210, 5, 17), (182, 17, 16),
+       (190, 58, 57)]
 purple = [(129, 89, 151), (98, 67, 113),
           (101, 71, 116), (94, 64, 109),
           (124, 82, 138), (120, 84, 138),
@@ -200,6 +202,7 @@ def getColor():
     # loops through grid and grabs colors with pyautogui
     logging.debug('Putting colors from screen coordinates into game grid...')
     global sagaGrid
+    time.sleep(1)
     for r in range(len(sagaGrid)):
         for c in range(len(sagaGrid[0])):
             x = pyautogui.pixel(CLICK_COORDS[r, c][0],
@@ -326,6 +329,7 @@ def matchGrid(sagaGrid, x, y, oldChar, newChar):
 
 def gameLoop():
     # main game loop.
+    global connections
     while True:
         getColor()
         maxCoordinate = {'CLICK_HERE': 0,
