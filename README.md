@@ -1,5 +1,5 @@
 # Sagacious Saga Bot
-A python script to automatically play Sagacious Saga using floodfill recursion strategy.
+A python script to automatically play Sagacious Saga (Found at: https://www.newgrounds.com/portal/view/635494) using floodfill recursion strategy.
 Dependant on pyautogui for color retrieval and screen checking for game region, buttons, and game over prompts.
 Make sure you have the game open and visible in a browser at 100% zoom.
 
